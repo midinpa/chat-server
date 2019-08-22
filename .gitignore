@@ -1,1 +1,43 @@
+# OS X
+.DS_Store*
+Icon?
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+.directory
+*~
+
+# npm
+node_modules
+package-lock.json
+*.log
+*.gz
+
+# Coveralls
+coverage
+
+# Benchmarking
+benchmarks/graphs
+
+# build
 dist
+
+# config
+config/
+!config/db
+deployment/mongodb-values.yaml
+deployment/secrets.yaml
+
+# cache
+cache/
+
+# test
+coverage/
+.nyc_output/
+test/apitest/v1/testdata/.thumbnails/
+.vscode/settings.json
