@@ -1,0 +1,77 @@
+<!-- client.html -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Chat</title>
+  <style>
+    .chat_log {
+      width: 95%;
+      height: 200px;
+    }
+
+    .name {
+      width: 10%;
+    }
+
+    .message {
+      width: 70%;
+    }
+
+    .chat {
+      width: 10%;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <textarea id="chatLog" class="chat_log" readonly></textarea>
+  </div>
+  <form id="chat">
+    <input id="username" value="<%= username %>" type="text" readonly>
+    <input id="receiver" type="text">
+    <input id="message" class="message" type="text">
+    <input type="submit" class="chat" value="chat" />
+  </form>
+  <div id="box" class="box">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      var socket = io();
+      const username = $('#username').val();
+      socket.emit('join', username);
+
+      $('#chat').on('submit', function (e) {
+        const receiver = $('#receiver').val();
+        try {
+          if (receiver) {
+            console.log('to exist');
+            socket.emit('send room message', $('#username').val(), $('#message').val(), receiver);
+          } else {
+            socket.emit('send broadcast message', $('#username').val(), $('#message').val());
+          }
+        } catch (e) {
+          console.log(e);
+        }
+        $('#message').val('');
+        $('#message').focus();
+        e.preventDefault();
+      });
+      socket.on('receive room message', function (msg) {
+        $('#chatLog').append(msg + '\n');
+        $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
+      });
+
+      socket.on('receive broadcast message', function (msg) {
+        $('#chatLog').append(msg + '\n');
+        $('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
+      });
+
+      
+    </script>
+</body>
+
+</html>
